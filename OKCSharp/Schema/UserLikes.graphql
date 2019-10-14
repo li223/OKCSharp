@@ -1,0 +1,62 @@
+﻿fragment UserFragment on User
+{
+    notificationsCount
+    {
+        likesIncoming
+        __typename
+    }
+    __typename
+}
+
+fragment UserrowConnectionFragement on LikeConnection
+{
+    previousViewTime
+    data
+    {
+        matchPercent
+        senderLikeTime
+        targetLikeTime
+        likeTime
+        senderMessageTime
+        targetMessageTime
+        targetLikeViaSpotlight
+        senderPassed
+        user
+        {
+            id
+            username
+            displayname
+            age
+            isOnline
+            location
+            summary
+            __typename
+        }
+        primaryImage
+        {
+            square225
+            __typename
+        }
+        __typename
+    }
+    pageInfo
+    {
+        after
+        hasMore
+        __typename
+    }
+    __typename
+}
+
+query userrowsOutgoingLikes($userid: String!, $after: String) 
+{
+    user(id: $userid) 
+    {
+        ...UserFragment
+        likes: likesMutualAndOutgoing(after: $after) 
+        {
+            ...UserrowConnectionFragment
+            __typename
+        }
+    }
+}

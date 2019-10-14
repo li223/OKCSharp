@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29319.158
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OKCSharp", "OKCSharp\OKCSharp.csproj", "{3FE5CF3E-6559-40A4-A60F-D2A4492559F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OKCSharpTests", "OKCSharpTests\OKCSharpTests.csproj", "{F600C958-3500-4CCB-8214-87CAA5887D64}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3FE5CF3E-6559-40A4-A60F-D2A4492559F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FE5CF3E-6559-40A4-A60F-D2A4492559F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FE5CF3E-6559-40A4-A60F-D2A4492559F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FE5CF3E-6559-40A4-A60F-D2A4492559F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F600C958-3500-4CCB-8214-87CAA5887D64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F600C958-3500-4CCB-8214-87CAA5887D64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F600C958-3500-4CCB-8214-87CAA5887D64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F600C958-3500-4CCB-8214-87CAA5887D64}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29ADAE74-5C70-4C0F-B2CC-C684CFD513D2}
+	EndGlobalSection
+EndGlobal

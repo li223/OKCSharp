@@ -1,0 +1,90 @@
+﻿fragment Basics on User 
+{
+	displayname
+	username
+	age
+	isOnline
+	staffBadge
+	location 
+	{
+		summary
+		__typename
+	}
+	__typename
+}
+
+fragment DesktopProfileThumbs on User 
+{
+	hasPhotos
+	photos 
+	{
+		id
+		width
+		height
+		caption
+		square225
+		original
+		__typename
+	}
+	__typename
+}
+
+fragment SelfviewEssays on User 
+{
+	essaysWithDefaults 
+	{
+		...EssayInfo
+		__typename
+	}
+	essayAlbumId
+	__typename
+}
+
+fragment Instagram on User 
+{
+	hasInstagram
+	instagramPhotos 
+	{
+		width
+		height
+		caption
+		original
+		square150
+		square320
+		square640
+		__typename
+	}
+	__typename
+}
+
+fragment LinkedAccount on User 
+{
+	linkedAccount 
+	{
+		isReciprocal
+		label
+		user 
+		{
+			username
+			displayname
+			primaryImage 
+			{
+				square60
+				__typename
+			}
+			__typename
+		}
+		__typename
+	}
+	__typename
+}
+
+fragment UserFragment on User
+{
+    notificationCounts
+    {
+        likesIncoming
+        __typename
+    }
+    __typename
+}
