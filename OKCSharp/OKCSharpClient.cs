@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using OKCSharp.DiscoveryObjects;
 using OKCSharp.Objects;
+using OKCSharp.Search;
 using OKCSharp.User;
 using System;
 using System.Collections.Generic;
@@ -126,14 +127,32 @@ namespace OKCSharp
             if (res.IsSuccessStatusCode) return JsonConvert.DeserializeObject<UserProfile>(cont);
             else return null;
         }
+        
+        /// <summary>
+        /// Search users
+        /// </summary>
+        /// <param name="payload">The request body to send</param>
+        /// <returns>SearchResult Object</returns>
+        public async Task<SearchResult?> SearchUsersAsync(SearchPayload payload)
+        {
+            var req = new HttpRequestMessage(HttpMethod.Post, new Uri($"{BaseAddress}/match/search"))
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(payload))
+            };
+            var res = await this.Http.SendAsync(req).ConfigureAwait(false);
+            var cont = await res.Content.ReadAsStringAsync().ConfigureAwait(false);
+            if (res.IsSuccessStatusCode) return JsonConvert.DeserializeObject<SearchResult>(cont);
+            else return null;
+        }
+        
 
-
+        
 
 
         //GraphQL doesnt wanna work and I hate it
-        internal async Task<IEnumerable<UserLike>?> GetUserLikesAsync(string? after = null)
+        internal async Task<T> SendGraphQLQueryAsync<T>(QueryType type, string? after = null)
         {
-            using var stream = Assembly.GetExecutingAssembly()?.GetManifestResourceStream("OKCSharp.Schema.UserLikes.graphql");
+            using var stream = Assembly.GetExecutingAssembly()?.GetManifestResourceStream($"OKCSharp.Schema.{type.ToString()}.graphql");
             if (stream == null) throw new NullReferenceException("Could not find resource");
             using var sr = new StreamReader(stream);
             var schema = await sr.ReadToEndAsync().ConfigureAwait(false);
@@ -157,38 +176,21 @@ namespace OKCSharp
             };
             var res = await this.Http.SendAsync(req).ConfigureAwait(false);
             var cont = await res.Content.ReadAsStringAsync().ConfigureAwait(false);
-            if (res.IsSuccessStatusCode) return (JsonConvert.DeserializeObject<ApiResponse<UserLikesNotification>>(cont)).ApiData?.NotificationData?.Likes?.Data;
+            if (res.IsSuccessStatusCode) return (JsonConvert.DeserializeObject<T>(cont));
+            else return default;
+        }
+
+        internal async Task<IEnumerable<UserLike>?> GetUserLikesAsync(string? after = null)
+        {
+            var data = await this.SendGraphQLQueryAsync<ApiResponse<UserLikesNotification>>(QueryType.UserLikes, after).ConfigureAwait(false);
+            if(data != null) return data.ApiData?.NotificationData?.Likes?.Data;
             else return null;
         }
 
         internal async Task<CurrentUserProfile?> GetCurrentUserProfileAsync()
         {
-            using var stream = Assembly.GetExecutingAssembly()?.GetManifestResourceStream("OKCSharp.Schema.UserProfile.graphql");
-            if (stream == null) throw new NullReferenceException("Could not find resource");
-            using var sr = new StreamReader(stream);
-            var schema = await sr.ReadToEndAsync().ConfigureAwait(false);
-            var gqlpay = new GraphQLPayload()
-            {
-                OperationName = "profileEditDesktop",
-                Query = schema,
-                Variables = new Dictionary<string, string>()
-                {
-                    {
-                        "id",
-                        this.UserLoginData?.UserId.ToString() ?? ""
-                    }
-                }
-            };
-
-            var jsonbody = JsonConvert.SerializeObject(gqlpay, Formatting.Indented);
-
-            var req = new HttpRequestMessage(HttpMethod.Post, new Uri($"https://www.okcupid.com/graphql"))
-            {
-                Content = new StringContent(jsonbody, Encoding.Default, "application/json")
-            };
-            var res = await this.Http.SendAsync(req).ConfigureAwait(false);
-            var cont = await res.Content.ReadAsStringAsync().ConfigureAwait(false);
-            if (res.IsSuccessStatusCode) return (JsonConvert.DeserializeObject<ApiResponse<CurrentUserProfile>>(cont)).ApiData;
+            var data = await this.SendGraphQLQueryAsync<ApiResponse<CurrentUserProfile>>(QueryType.CurrentUserProfile).ConfigureAwait(false);
+            if (data != null) return data.ApiData;
             else return null;
         }
     }

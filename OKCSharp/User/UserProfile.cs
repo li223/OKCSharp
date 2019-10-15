@@ -9,8 +9,11 @@ namespace OKCSharp.User
         [JsonProperty("id")]
         public ulong Id { get; private set; }
 
+        [JsonProperty("last_login")]
+        public ulong LastLoggedIn { get; private set; }
+
         [JsonProperty("username")]
-        public ulong Username { get; private set; }
+        public string Username { get; private set; }
 
         [JsonProperty("online")]
         public bool IsOnline { get; private set; }

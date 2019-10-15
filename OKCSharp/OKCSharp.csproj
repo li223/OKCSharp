@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Schema\UserLikes.graphql" />
-    <EmbeddedResource Include="Schema\UserProfile.graphql" />
+    <EmbeddedResource Include="Schema\CurrentUserProfile.graphql" />
   </ItemGroup>
 
   <ItemGroup>
